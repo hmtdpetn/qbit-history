@@ -1,0 +1,135 @@
+?   	qbit-history/cmd/benchmark	[no test files]
+?   	qbit-history/cmd/history	[no test files]
+?   	qbit-history/cmd/mockqb	[no test files]
+=== RUN   TestAuthRequiredEverywhere
+--- PASS: TestAuthRequiredEverywhere (0.25s)
+=== RUN   TestLoginRateLimitAndCSRF
+--- PASS: TestLoginRateLimitAndCSRF (10.63s)
+=== RUN   TestInstanceLifecycleWithMock
+--- PASS: TestInstanceLifecycleWithMock (0.60s)
+PASS
+ok  	qbit-history/internal/api	13.605s
+=== RUN   TestRoundTripShapes
+--- PASS: TestRoundTripShapes (0.01s)
+=== RUN   TestZeroRunIsTiny
+    raw_test.go:88: 300 zero samples -> 94 bytes (0.313 B/sample)
+--- PASS: TestZeroRunIsTiny (0.00s)
+=== RUN   TestCounterOnlySurvives
+--- PASS: TestCounterOnlySurvives (0.00s)
+=== RUN   TestCorruptionDetected
+--- PASS: TestCorruptionDetected (0.00s)
+=== RUN   TestLimits
+--- PASS: TestLimits (0.00s)
+=== RUN   TestSizePerSample
+    raw_test.go:138: zero    300 samples ->    94 bytes  0.31 B/sample
+    raw_test.go:138: steady  300 samples ->  4908 bytes  16.36 B/sample
+    raw_test.go:138: random  300 samples ->  6031 bytes  20.10 B/sample
+    raw_test.go:138: jitter  300 samples ->   996 bytes  3.32 B/sample
+--- PASS: TestSizePerSample (0.00s)
+PASS
+ok  	qbit-history/internal/codec	0.441s
+=== RUN   TestEveryTorrentSampledEveryRound
+--- PASS: TestEveryTorrentSampledEveryRound (0.30s)
+=== RUN   TestSameHashDifferentInstancesStayIsolated
+--- PASS: TestSameHashDifferentInstancesStayIsolated (0.05s)
+=== RUN   TestFailuresDoNotDeleteOrFabricate
+--- PASS: TestFailuresDoNotDeleteOrFabricate (0.05s)
+=== RUN   TestAuthFailureCoolsDown
+--- PASS: TestAuthFailureCoolsDown (0.04s)
+=== RUN   TestExplicitRemovalFlow
+--- PASS: TestExplicitRemovalFlow (0.05s)
+=== RUN   TestRestartProtectionAndBulk
+--- PASS: TestRestartProtectionAndBulk (0.05s)
+=== RUN   TestSlowUpstreamIsNotStacked
+--- PASS: TestSlowUpstreamIsNotStacked (1.84s)
+=== RUN   TestExplicitRemovalNeedsFreshFullConfirmation
+--- PASS: TestExplicitRemovalNeedsFreshFullConfirmation (0.00s)
+=== RUN   TestImplicitMissingNeedsThreeSpacedConfirmations
+--- PASS: TestImplicitMissingNeedsThreeSpacedConfirmations (0.00s)
+=== RUN   TestStartupProtectionBlocksDeletion
+--- PASS: TestStartupProtectionBlocksDeletion (0.00s)
+=== RUN   TestBulkProtection
+--- PASS: TestBulkProtection (0.00s)
+=== RUN   TestManagerWriterPersistsAndSeals
+--- PASS: TestManagerWriterPersistsAndSeals (2.15s)
+=== RUN   TestManagerStopsCollectorForDisabledInstance
+--- PASS: TestManagerStopsCollectorForDisabledInstance (0.20s)
+PASS
+ok  	qbit-history/internal/collector	8.524s
+?   	qbit-history/internal/mockqb	[no test files]
+?   	qbit-history/internal/model	[no test files]
+=== RUN   TestThinKeepsExtremesIndependently
+--- PASS: TestThinKeepsExtremesIndependently (0.00s)
+=== RUN   TestRawWindowIsLossless
+--- PASS: TestRawWindowIsLossless (0.05s)
+=== RUN   TestOldDataFlattensPeaksAndDrift
+--- PASS: TestOldDataFlattensPeaksAndDrift (0.14s)
+=== RUN   TestOverviewAlignmentAndMissing
+--- PASS: TestOverviewAlignmentAndMissing (0.06s)
+PASS
+ok  	qbit-history/internal/query	2.407s
+=== RUN   TestBuildWeightsAndExtremes
+--- PASS: TestBuildWeightsAndExtremes (0.00s)
+=== RUN   TestToFiveMatchesDirectBuildAndIsIdempotent
+--- PASS: TestToFiveMatchesDirectBuildAndIsIdempotent (0.00s)
+=== RUN   TestMergeDoesNotAverageAverages
+--- PASS: TestMergeDoesNotAverageAverages (0.00s)
+=== RUN   TestCounterResetAndGap
+--- PASS: TestCounterResetAndGap (0.00s)
+=== RUN   TestFlatRule
+--- PASS: TestFlatRule (0.00s)
+=== RUN   TestEncodeDecodeRoundTrip
+    rollup_test.go:165: 60 one-minute buckets -> 5777 bytes (96.3 B/bucket)
+--- PASS: TestEncodeDecodeRoundTrip (0.00s)
+PASS
+ok  	qbit-history/internal/rollup	2.658s
+=== RUN   TestEncryptRoundTripIsBoundToInstance
+--- PASS: TestEncryptRoundTripIsBoundToInstance (0.00s)
+=== RUN   TestKeyFileHandling
+--- PASS: TestKeyFileHandling (0.00s)
+=== RUN   TestPasswordHashing
+--- PASS: TestPasswordHashing (0.80s)
+=== RUN   TestRandomAndDigest
+--- PASS: TestRandomAndDigest (0.00s)
+PASS
+ok  	qbit-history/internal/security	0.911s
+=== RUN   TestAppendSealQuery
+    store_test.go:126: zero series: 591 bytes for 40 min raw (0.25 B/sample)
+    store_test.go:132: steady series: 21350 bytes for 40 min raw (8.90 B/sample)
+--- PASS: TestAppendSealQuery (0.29s)
+=== RUN   TestDuplicateFrameAndBlockDedup
+--- PASS: TestDuplicateFrameAndBlockDedup (0.05s)
+=== RUN   TestEpochChangeMidWindow
+--- PASS: TestEpochChangeMidWindow (0.05s)
+=== RUN   TestTombstoneBarrier
+--- PASS: TestTombstoneBarrier (0.05s)
+=== RUN   TestRetentionCleanup
+--- PASS: TestRetentionCleanup (0.05s)
+=== RUN   TestRemoveInstanceEventuallyPurges
+--- PASS: TestRemoveInstanceEventuallyPurges (0.04s)
+=== RUN   TestSpacePauseAndResume
+--- PASS: TestSpacePauseAndResume (0.11s)
+=== RUN   TestQueueBounds
+--- PASS: TestQueueBounds (0.00s)
+=== RUN   TestOpenRejectsCodecMismatch
+--- PASS: TestOpenRejectsCodecMismatch (0.04s)
+PASS
+ok  	qbit-history/internal/store	4.493s
+=== RUN   TestNormalizeAccepts
+--- PASS: TestNormalizeAccepts (0.00s)
+=== RUN   TestNormalizeRejects
+--- PASS: TestNormalizeRejects (0.00s)
+=== RUN   TestOnlyWhitelistedEndpoints
+--- PASS: TestOnlyWhitelistedEndpoints (0.00s)
+=== RUN   TestLoginRequiresOkAndSID
+--- PASS: TestLoginRequiresOkAndSID (0.00s)
+=== RUN   TestRedirectsAreNotFollowed
+--- PASS: TestRedirectsAreNotFollowed (0.00s)
+=== RUN   TestOversizeAndInvalidResponses
+--- PASS: TestOversizeAndInvalidResponses (0.00s)
+=== RUN   TestSyncValidation
+--- PASS: TestSyncValidation (0.00s)
+=== RUN   TestMissingFieldIsNotZero
+--- PASS: TestMissingFieldIsNotZero (0.00s)
+PASS
+ok  	qbit-history/internal/upstream	2.689s

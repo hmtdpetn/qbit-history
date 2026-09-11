@@ -1,0 +1,6 @@
+# Keep LF everywhere. Shell scripts and the Dockerfile are executed inside a
+# Linux container, where CRLF line endings break the shebang.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.ico binary

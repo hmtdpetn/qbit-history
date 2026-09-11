@@ -1,0 +1,95 @@
+# Standalone qbit-history project. It never declares, depends on or restarts
+# your qBittorrent services; at most it joins a network they are already on.
+name: qbit-history
+
+services:
+  qbit-history:
+    image: qbit-history:${HISTORY_VERSION:-2.0.0}
+    build:
+      context: .
+      args:
+        VERSION: ${HISTORY_VERSION:-2.0.0}
+    container_name: qbit-history
+    restart: unless-stopped
+    user: "65532:65532"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    environment:
+      HISTORY_LISTEN: ":28637"
+      HISTORY_DATA: /data
+      HISTORY_MASTER_KEY: /run/secrets/master.key
+      HISTORY_WEB: /app/web
+      # Only read on the very first start (creates the "admin" account); remove afterwards.
+      HISTORY_ADMIN_PASSWORD: ${HISTORY_ADMIN_PASSWORD:-}
+      # Set to 1 only when served through an HTTPS reverse proxy (cookie Secure flag).
+      HISTORY_SECURE_COOKIE: ${HISTORY_SECURE_COOKIE:-0}
+      # Local testing only, on filesystems that cannot store Unix modes (Windows/SMB
+      # bind mounts always report 0777). Leave at 0 on the server.
+      HISTORY_ALLOW_INSECURE_KEY_PERMS: ${HISTORY_ALLOW_INSECURE_KEY_PERMS:-0}
+    ports:
+      # Loopback only by default, so nothing is exposed until you decide to.
+      # On the same machine, open http://127.0.0.1:28637.
+      # On a remote host, prefer an SSH tunnel over opening the port:
+      #   ssh -N -L 28637:127.0.0.1:28637 you@your-host
+      # To reach it from your LAN instead, set HISTORY_BIND=0.0.0.0 in .env —
+      # but only behind a firewall or an HTTPS reverse proxy, and see
+      # HISTORY_SECURE_COOKIE below.
+      - "${HISTORY_BIND:-127.0.0.1}:${HISTORY_PORT:-28637}:28637"
+    volumes:
+      - ${HISTORY_DATA_DIR:-./data}:/data
+      - ${HISTORY_MASTER_KEY_FILE:-./secrets/master.key}:/run/secrets/master.key:ro
+    # Lets you reach a qBittorrent running on the host (not in Docker) as
+    # http://host.docker.internal:8080 on Linux too, where it is not built in.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - default
+      # One line per qBittorrent network declared at the bottom of this file:
+      # - qb1
+      # - qb2
+    mem_limit: ${HISTORY_MEM_LIMIT:-256m}
+    memswap_limit: ${HISTORY_MEM_LIMIT:-256m}
+    cpus: ${HISTORY_CPUS:-1.0}
+    pids_limit: 128
+    stop_grace_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "/app/history", "-healthcheck"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+
+networks:
+  default: {}
+
+  # Nothing below is needed if qBittorrent is reachable by IP or hostname —
+  # on the host (http://host.docker.internal:8080), on your LAN, or anywhere
+  # else. It is only needed to reach a qBittorrent container by its name.
+  #
+  # A container in another Compose project is on that project's own bridge
+  # network, so this container has to join it. Find the network name with:
+  #
+  #   docker inspect -f '{{range $k, $v := .NetworkSettings.Networks}}{{$k}} {{end}}' <qb-container>
+  #
+  # Then uncomment one block per instance, put its name in .env, and add the
+  # matching "- qbN" line to the service's networks list above. There is no
+  # limit: add qb3, qb4, … the same way.
+  #
+  # Two entries must never point at the same network — Docker refuses to attach
+  # one container to the same network twice. Instances that share a network only
+  # need one entry.
+  #
+  # qb1:
+  #   external: true
+  #   name: ${QB_NETWORK_1:?set QB_NETWORK_1 in .env to the first qBittorrent Docker network}
+  # qb2:
+  #   external: true
+  #   name: ${QB_NETWORK_2:?set QB_NETWORK_2 in .env to the second qBittorrent Docker network}
