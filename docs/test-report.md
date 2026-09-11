@@ -128,7 +128,7 @@ All combinations stay below the 2 GiB budget's 1.5 GiB main-DB line, and 500 tas
 `docker compose build` → image **~14 MiB** (11.6 MiB static binary + 1.9 MiB UI
 assets on `distroless/static:nonroot`). Then the delivered `docker-compose.yml`
 was started against an external network carrying **two** mock qB containers
-named `ptt-qbittorrent-1` and `school-qbittorrent-1`, both listening on the
+named `qb-a-qbittorrent-1` and `qb-b-qbittorrent-1`, both listening on the
 same internal port 8080 — exactly the topology the connection help text
 describes.
 
@@ -141,12 +141,12 @@ describes.
 | DNS by container name | both instances registered as `http://<container-name>:8080` and came online; qB version read back as v5.0.4 |
 | **identity isolation** | the two mocks expose the **same 30 hashes**: 30 distinct `qb_key` → **60 distinct torrent ids and 60 distinct series**, 2 instances |
 | sampling | 50 rounds each, 30 torrents each, 10-minute coverage 100 % on both |
-| **fault isolation** | `docker stop school-qbittorrent-1` → that instance went `offline` with `network_dns_tls_or_timeout` and 5 failed rounds, while the other stayed `online` with **0 failed rounds** |
+| **fault isolation** | `docker stop qb-b-qbittorrent-1` → that instance went `offline` with `network_dns_tls_or_timeout` and 5 failed rounds, while the other stayed `online` with **0 failed rounds** |
 | overview during the outage | `missing_components: true`, 4 `null` points — and **0 fabricated zeros** |
 | outage ≠ deletion | after `docker start`, both instances returned online and the torrent count was still **60** (no tombstones) |
 | restart | `docker compose restart` logged a clean `stopped`, resumed both collectors, and kept all 60 torrents and the database |
 | persistence | `data/history.sqlite` + `-wal` + `-shm` on the host volume; 10 571 samples, `queue_dropped: 0`, `paused: false` |
-| **upstream whitelist** | mock request logs read from inside the network: ptt 332 `sync/maindata` + 4 login + 8 version, school 195 + 1 + 2 — **`violations: []` on both** |
+| **upstream whitelist** | mock request logs read from inside the network: qb-a 332 `sync/maindata` + 4 login + 8 version, qb-b 195 + 1 + 2 — **`violations: []` on both** |
 | **resources** | **10.1 MiB / 256 MiB (3.9 %)**, CPU 0.17 %, 8 PIDs, with 60 torrents across 2 instances at 1 Hz |
 
 The 256 MiB / 0.25 CPU limits therefore have a large margin at 60 torrents;

@@ -11,8 +11,8 @@
       <v-card border class="card-pad">
         <div class="card-title"><h2>{{ editId ? '编辑连接' : '添加连接' }}</h2><span v-if="editId" class="sub">ID {{ editId.slice(0, 8) }}…</span></div>
         <v-form @submit.prevent="save">
-          <v-text-field v-model="form.name" label="显示名称" placeholder="例如 qB-PTT" :rules="[required]" />
-          <v-text-field v-model="form.base_url" label="qB WebUI 地址（从 history 容器出发）" placeholder="例如 http://ptt-qbittorrent-1:8080" :rules="[required]" hint="容器内 127.0.0.1 指向 history 自己；优先填写唯一容器名 / 可解析 DNS 名 + 内部端口。反代前缀可写在路径中。" persistent-hint />
+          <v-text-field v-model="form.name" label="显示名称" placeholder="例如 qB-下载机" :rules="[required]" />
+          <v-text-field v-model="form.base_url" label="qB WebUI 地址（从 history 容器出发）" placeholder="例如 http://qbittorrent:8080" :rules="[required]" hint="容器内 127.0.0.1 指向 history 自己；优先填写唯一容器名 / 可解析 DNS 名 + 内部端口。反代前缀可写在路径中。" persistent-hint />
           <v-text-field v-model="form.username" label="qB 用户名" autocomplete="off" :rules="[required]" class="mt-2" />
           <v-text-field v-model="form.password" :label="editId ? '密码（留空 = 不修改已保存的密码）' : 'qB 密码'" type="password" autocomplete="new-password" :rules="editId ? [] : [required]" />
           <v-switch v-model="form.poll_enabled" label="启用采集" color="primary" density="compact" hide-details class="mb-3" />
